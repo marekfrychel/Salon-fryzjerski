@@ -1,0 +1,212 @@
+﻿@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Salon Fryzjerski – aplikacja do zarządzania salonem</h1>
+        <p class="lead text-muted mt-3">
+            Projekt wykonany w technologii ASP.NET Core MVC jako wewnętrzny system wspierający pracę salonu fryzjerskiego:
+            zarządzanie usługami, pracownikami, wizytami oraz grafikiem.
+        </p>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <h2 class="h4 mb-3">Cel projektu</h2>
+            <p class="fs-5">
+                Celem aplikacji jest usprawnienie organizacji pracy salonu fryzjerskiego poprzez centralne zarządzanie usługami,
+                personelem oraz terminarzem wizyt. System pozwala planować wizyty bez konfliktów czasowych, kontrolować dostępność
+                fryzjerów w oparciu o ich godziny pracy oraz porządkować obsługę klientów w jednym miejscu.
+            </p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 card-title">Usługi</h3>
+                    <p class="card-text">
+                        Zarządzanie katalogiem usług wraz z parametrami wykorzystywanymi w planowaniu wizyt.
+                    </p>
+                    <ul class="mb-0">
+                        <li>dodawanie i edycja usług</li>
+                        <li>czas trwania usługi</li>
+                        <li>cena usługi</li>
+                        <li>status aktywności usługi</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 card-title">Pracownicy (fryzjerzy)</h3>
+                    <p class="card-text">
+                        Zarządzanie fryzjerami oraz powiązanie kont użytkowników z pracownikami.
+                    </p>
+                    <ul class="mb-0">
+                        <li>dodawanie fryzjerów</li>
+                        <li>przypisanie konta (Identity) do pracownika</li>
+                        <li>status aktywności pracownika</li>
+                        <li>powiązanie z grafikiem oraz wizytami</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 card-title">Wizyty</h3>
+                    <p class="card-text">
+                        Planowanie wizyt z uwzględnieniem usług, czasu trwania oraz dostępności fryzjera.
+                    </p>
+                    <ul class="mb-0">
+                        <li>tworzenie wizyt z usługą i fryzjerem</li>
+                        <li>walidacja terminów i konfliktów (nakładanie wizyt)</li>
+                        <li>statusy realizacji wizyt (np. zaplanowana, anulowana)</li>
+                        <li>edycja danych wizyty</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 card-title">Grafik i kalendarz</h3>
+                    <p class="card-text">
+                        Widok tygodniowy umożliwiający przegląd grafiku pracy oraz zaplanowanych wizyt dla wszystkich fryzjerów.
+                    </p>
+                    <ul class="mb-0">
+                        <li>tygodniowy widok grafiku</li>
+                        <li>prezentacja wizyt w czasie</li>
+                        <li>podgląd dostępności</li>
+                        <li>praca w oparciu o godziny pracy fryzjerów</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 card-title">Godziny pracy fryzjerów</h3>
+                    <p class="card-text">
+                        Konfiguracja dostępności pracowników w poszczególne dni tygodnia, wykorzystywana w planowaniu wizyt.
+                    </p>
+                    <ul class="mb-0">
+                        <li>ustawianie dni pracujących / wolnych</li>
+                        <li>ustawianie godzin pracy (od–do)</li>
+                        <li>spójność z grafikiem i walidacją terminów</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <h2 class="h4 mb-3">Realizacja wymagań z polecenia</h2>
+            <p class="text-muted mb-3">
+                <h3 class="h5 mt-4 mb-3">Zestawienie zrealizowanych funkcjonalności</h3>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Zadanie</th>
+                                <th class="text-center">Maksymalna ilość punktów</th>
+                                <th class="text-center text-danger">Deklarowana ilość punktów</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Logowanie i rejestracja użytkowników</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center text-danger">10</td>
+                            </tr>
+                            <tr>
+                                <td>Walidacja danych wejściowych</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center text-danger">10</td>
+                            </tr>
+                            <tr>
+                                <td>Korzystanie z bazy danych poprzez Entity Framework razem z migracjami</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center text-danger">10</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Ekrany operujące na co najmniej pięciu typach danych
+                                    <br />
+                                    <small class="text-muted">
+                                        (np. usługi, pracownicy, wizyty, dostępność, uprawnienia użytkowników)
+                                    </small>
+                                </td>
+                                <td class="text-center">25</td>
+                                <td class="text-center text-danger">25</td>
+                            </tr>
+                            <tr>
+                                <td>Wzorzec Simple Factory</td>
+                                <td class="text-center">5</td>
+                                <td class="text-center text-danger">4</td>
+                            </tr>
+                            <tr>
+                                <td>Wykorzystanie interfejsów</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center text-danger">10</td>
+                            </tr>
+                            <tr>
+                                <td>Wzorzec Factory Method</td>
+                                <td class="text-center">5</td>
+                                <td class="text-center text-danger" 5</td>
+                            </tr>
+                            <tr>
+                                <td>Wzorzec Abstract Factory</td>
+                                <td class="text-center">5</td>
+                                <td class="text-center text-danger" 3</td>
+                            </tr>
+                            <tr>
+                                <td>Klasy bazowe i abstrakcyjne oraz wzorzec Singleton</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center text-danger" 0</td>
+                            </tr>
+                            <tr>
+                                <td>Wzorzec Interpreter</td>
+                                <td class="text-center">5</td>
+                                <td class="text-center text-danger" 4</td>
+                            </tr>
+                            <tr>
+                                <td>Wzorzec Mediator</td>
+                                <td class="text-center">5</td>
+                                <td class="text-center text-danger" 2</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <th>Suma</th>
+                                <th class="text-center">100</th>
+                                <th class="text-center text-danger">83</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center text-muted">
+        <small>
+            Aplikacja jest projektem zaliczeniowym realizującym temat: „Salon fryzjerski”.
+        </small>
+    </div>
+
+</div>

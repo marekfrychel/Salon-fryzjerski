@@ -1,0 +1,53 @@
+﻿@model SalonFryzjerski.Models.ViewModels.EditAvailabilityWeekVm
+
+@{
+    ViewData["Title"] = "Godziny pracy";
+}
+
+<h2>Godziny pracy: @Model.EmployeeName</h2>
+
+<form asp-action="EditWeek" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="EmployeeId" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <table class="table table-bordered align-middle">
+        <thead>
+            <tr>
+                <th style="width:220px;">Dzień</th>
+                <th style="width:120px;">Pracuje</th>
+                <th style="width:180px;">Start</th>
+                <th style="width:180px;">Koniec</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < Model.Days.Count; i++)
+        {
+            <tr>
+                <td>
+                    <strong>@Model.Days[i].DayName</strong>
+                    <input type="hidden" asp-for="Days[i].DayOfWeek" />
+                    <input type="hidden" asp-for="Days[i].DayName" />
+                </td>
+                <td>
+                    <input asp-for="Days[i].IsWorking" class="form-check-input" />
+                </td>
+                <td>
+                    <input asp-for="Days[i].StartTime" type="time" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="Days[i].EndTime" type="time" class="form-control" />
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a class="btn btn-outline-secondary" asp-controller="Employees" asp-action="Index">Wróć</a>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

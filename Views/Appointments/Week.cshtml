@@ -1,0 +1,226 @@
+﻿@model SalonFryzjerski.Models.ViewModels.WeekScheduleVm
+@using SalonFryzjerski.Models
+
+@{
+    ViewData["Title"] = "Grafik tygodniowy";
+    var days = Enumerable.Range(0, 7).Select(i => Model.WeekStart.AddDays(i)).ToList();
+    var now = DateTime.Now.AddMinutes(5); // bufor 5 minut
+}
+
+<style>
+    /* Kafelek wizyty (minimal + rozwijanie kliknięciem) */
+    details.appt-card {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: .5rem;
+        padding: .35rem .5rem;
+    }
+
+        details.appt-card[open] {
+            border-color: #adb5bd;
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.06);
+        }
+
+        details.appt-card > summary {
+            list-style: none;
+            cursor: pointer;
+            display: block;
+            outline: none;
+        }
+
+            details.appt-card > summary::-webkit-details-marker {
+                display: none;
+            }
+
+    .appt-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .appt-title {
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .appt-sub {
+        font-size: .85em;
+        color: #6c757d;
+        margin-top: .15rem;
+        line-height: 1.2;
+    }
+
+    .appt-details {
+        margin-top: .35rem;
+        font-size: .85em;
+        line-height: 1.25;
+    }
+
+    .appt-note {
+        color: #6c757d;
+        font-style: italic;
+        margin-top: .15rem;
+    }
+
+    /* Slot w środku wizyty (placeholder) */
+    .appt-block {
+        height: 26px;
+        border-radius: .5rem;
+    }
+</style>
+
+
+<h2>Grafik tygodniowy</h2>
+
+<div class="d-flex gap-2 mb-3">
+    <a class="btn btn-outline-secondary"
+       asp-action="Week"
+       asp-route-start="@Model.WeekStart.AddDays(-7).ToString("yyyy-MM-dd")">← Poprzedni</a>
+
+    <a class="btn btn-outline-secondary"
+       asp-action="Week"
+       asp-route-start="@DateTime.Today.ToString("yyyy-MM-dd")">Dziś</a>
+
+    <a class="btn btn-outline-secondary"
+       asp-action="Week"
+       asp-route-start="@Model.WeekStart.AddDays(7).ToString("yyyy-MM-dd")">Następny →</a>
+
+    <a class="btn btn-primary ms-auto" asp-action="Create">+ Nowa wizyta</a>
+</div>
+
+<table class="table table-bordered align-middle">
+    <thead>
+        <tr>
+            <th style="width:160px;">Fryzjer</th>
+            @foreach (var d in days)
+            {
+                <th>@d.ToString("ddd dd.MM")</th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var emp in Model.Employees)
+        {
+            <tr>
+                <th>@emp.FirstName</th>
+
+                @foreach (var d in days)
+                {
+                    <td style="min-width:170px;">
+                        @{
+                            var dayStart = d.Date;
+                            var dayEnd = d.Date.AddDays(1);
+
+                            // Monday=1 ... Sunday=7
+                            int dow = d.DayOfWeek == DayOfWeek.Sunday ? 7 : (int)d.DayOfWeek;
+
+                            var avail = Model.Availabilities.FirstOrDefault(a =>
+                            a.EmployeeId == emp.Id &&
+                            a.DayOfWeek == dow &&
+                            a.IsWorking
+                            );
+                        }
+
+                        @if (avail == null)
+                        {
+                            <span class="text-muted">Nie pracuje</span>
+                        }
+                        else
+                        {
+                            var open = dayStart.Add(avail.StartTime);
+                            var close = dayStart.Add(avail.EndTime);
+                            var stepMinutes = 30;
+
+                            var dayAppts = Model.Appointments
+                            .Where(a => a.EmployeeId == emp.Id && a.StartAt >= dayStart && a.StartAt < dayEnd)
+                            .OrderBy(a => a.StartAt)
+                            .ToList();
+
+                            <div class="d-flex flex-column gap-1" style="max-height:420px; overflow-y:auto;">
+                                @for (var slotStart = open; slotStart < close; slotStart = slotStart.AddMinutes(stepMinutes))
+                                {
+                                    var slotEnd = slotStart.AddMinutes(stepMinutes);
+
+                                    var hit = dayAppts.FirstOrDefault(a =>
+                                    a.StartAt < slotEnd &&
+                                    a.EndAt > slotStart
+                                    );
+
+                                    if (hit == null)
+                                    {
+                                        if (slotStart < now)
+                                        {
+                                            <div class="text-muted border rounded" style="height:26px; padding:2px 6px;">
+                                                <strong>@slotStart.ToString("HH:mm")</strong>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-sm btn-outline-secondary text-start"
+                                               style="padding:2px 6px;"
+                                               asp-action="Create"
+                                               asp-route-employeeId="@emp.Id"
+                                               asp-route-startAt="@slotStart.ToString("yyyy-MM-ddTHH:mm")">
+                                                <strong>@slotStart.ToString("HH:mm")</strong>
+                                                <span class="ms-1">+</span>
+                                            </a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Kafelek pokazuj w slocie, w którym START wizyty wpada do slotu
+                                        var isStartSlot = hit.StartAt >= slotStart && hit.StartAt < slotEnd;
+
+                                        if (isStartSlot)
+                                        {
+                                            string statusClass = hit.Status switch
+                                            {
+                                                AppointmentStatus.Planned => "text-secondary bg-light",
+                                                AppointmentStatus.Cancelled => "text-primary bg-light",
+                                                AppointmentStatus.Done => "text-success bg-light",
+                                                _ => "text-dark bg-light"
+                                            };
+
+
+                                            <details class="appt-card">
+                                                <summary>
+                                                    <div class="appt-summary">
+                                                        <span class="appt-title">@hit.StartAt.ToString("HH:mm")–@hit.EndAt.ToString("HH:mm")</span> 
+                                                        
+
+                                                    </div>
+                                                    <span class="badge @statusClass">@hit.Status</span>
+                                                    <div class="appt-sub">@hit.Service?.Name</div>
+                                                </summary>
+
+                                                <div class="appt-details">
+                                                    @if (!string.IsNullOrWhiteSpace(hit.ClientName))
+                                                    {
+                                                        <div><strong>@hit.ClientName</strong></div>
+                                                    }
+
+                                                    @if (!string.IsNullOrWhiteSpace(hit.Note))
+                                                    {
+                                                        <div class="appt-note">
+                                                            @(hit.Note!.Length > 80 ? hit.Note.Substring(0, 80) + "…" : hit.Note)
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </details>
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-light border appt-block"></div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

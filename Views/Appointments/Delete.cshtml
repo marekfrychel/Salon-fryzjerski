@@ -1,0 +1,62 @@
+﻿@model SalonFryzjerski.Models.Appointment
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<div class="alert alert-danger">
+    <strong>Uwaga!</strong> Czy na pewno chcesz usunąć tę wizytę?
+</div>
+
+<h4>Szczegóły wizyty</h4>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Usługa</dt>
+    <dd class="col-sm-9">@Model.Service?.Name</dd>
+
+    <dt class="col-sm-3">Fryzjer</dt>
+    <dd class="col-sm-9">@Model.Employee?.FirstName @Model.Employee?.LastName</dd>
+
+    <dt class="col-sm-3">Start</dt>
+    <dd class="col-sm-9">@Model.StartAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+    <dt class="col-sm-3">Koniec</dt>
+    <dd class="col-sm-9">@Model.EndAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+    <dt class="col-sm-3">Osoba</dt>
+    <dd class="col-sm-9">@Model.ClientName</dd>
+
+    <dt class="col-sm-3">Komentarz</dt>
+    <dd class="col-sm-9">
+        @if (!string.IsNullOrWhiteSpace(Model.Note))
+        {
+            @Model.Note
+        }
+        else
+        {
+            <span class="text-muted">— brak —</span>
+        }
+    </dd>
+
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9">
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Status)</dt>
+    <dd class="col-sm-10">@Model.Status</dd>
+        </span>
+    </dd>
+</dl>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">
+        🗑️ Usuń wizytę
+    </button>
+
+    <a asp-action="Index" class="btn btn-outline-secondary ms-2">
+        Anuluj
+    </a>
+</form>

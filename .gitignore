@@ -1,0 +1,38 @@
+# Visual Studio i lokalne ustawienia
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Wyniki kompilacji
+[Bb]in/
+[Oo]bj/
+publish/
+TestResults/
+*.log
+wwwroot/**/*.map
+
+# Lokalne bazy danych i pliki dziennika SQLite
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Sekrety i lokalna konfiguracja
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.*.Local.json
+secrets.json
+*.pfx
+*.p12
+
+# Archiwa i pliki systemowe
+*.7z
+*.zip
+Thumbs.db
+.DS_Store

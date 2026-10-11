@@ -1,0 +1,37 @@
+﻿@model SalonFryzjerski.Models.Appointment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<h4>Appointment</h4>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-2">Usługa</dt>
+    <dd class="col-sm-10">@Model.Service?.Name</dd>
+
+    <dt class="col-sm-2">Fryzjer</dt>
+    <dd class="col-sm-10">@Model.Employee?.FirstName @Model.Employee?.LastName</dd>
+
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.StartAt)</dt>
+    <dd class="col-sm-10">@Model.StartAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.EndAt)</dt>
+    <dd class="col-sm-10">@Model.EndAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+    <dt class="col-sm-2">Osoba</dt>
+    <dd class="col-sm-10">@Model.ClientName</dd>
+
+    <dt class="col-sm-2">Komentarz</dt>
+    <dd class="col-sm-10">@Model.Note</dd>
+
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Status)</dt>
+    <dd class="col-sm-10">@Model.Status</dd>
+</dl>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-outline-secondary ms-2">Back to List</a>
+</div>

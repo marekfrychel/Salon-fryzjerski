@@ -1,0 +1,75 @@
+﻿@model SalonFryzjerski.Models.Appointment
+@using SalonFryzjerski.Models
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<h4>Appointment</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="Edit">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="ServiceId" class="control-label"></label>
+                <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId">
+                    <option value="">-- wybierz usługę --</option>
+                </select>
+                <span asp-validation-for="ServiceId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-2">
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId">
+                    <option value="">-- wybierz fryzjera --</option>
+                </select>
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-2">
+                <label asp-for="StartAt" class="control-label"></label>
+                <input asp-for="StartAt" class="form-control" type="datetime-local" />
+                <span asp-validation-for="StartAt" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-2">
+                <label asp-for="ClientName" class="control-label">Osoba</label>
+                <input asp-for="ClientName" class="form-control" />
+                <span asp-validation-for="ClientName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-2">
+                <label asp-for="Note" class="control-label">Komentarz</label>
+                <textarea asp-for="Note" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-2">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control"
+                        asp-items="Html.GetEnumSelectList<AppointmentStatus>()">
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            @* EndAt / UserId liczone w kontrolerze — nie pokazujemy *@
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary ms-2">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

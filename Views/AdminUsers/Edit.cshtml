@@ -1,0 +1,63 @@
+﻿@model SalonFryzjerski.Models.AdminUserEditVm
+@using SalonFryzjerski.Models
+
+@{
+    ViewData["Title"] = "Uprawnienia";
+}
+
+<h2>Uprawnienia: @Model.Email</h2>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Email" />
+
+    <table class="table table-bordered align-middle">
+        <thead>
+            <tr>
+                <th>Moduł</th>
+                <th class="text-center">Brak</th>
+                <th class="text-center">Podgląd</th>
+                <th class="text-center">Edycja</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Permissions.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <strong>@Model.Permissions[i].Module</strong>
+                        <input type="hidden" name="Permissions[@i].Module" value="@( (int)Model.Permissions[i].Module )" />
+
+                    </td>
+
+                    <td class="text-center">
+                        <input type="radio"
+                               name="Permissions[@i].Access"
+                               value="@AccessLevel.None"
+                        @(Model.Permissions[i].Access == AccessLevel.None ? "checked" : "") />
+                    </td>
+
+                    <td class="text-center">
+                        <input type="radio"
+                               name="Permissions[@i].Access"
+                               value="@AccessLevel.View"
+                        @(Model.Permissions[i].Access == AccessLevel.View ? "checked" : "") />
+                    </td>
+
+                    <td class="text-center">
+                        <input type="radio"
+                               name="Permissions[@i].Access"
+                               value="@AccessLevel.Edit"
+                        @(Model.Permissions[i].Access == AccessLevel.Edit ? "checked" : "") />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex gap-2">
+        <button class="btn btn-success" type="submit">Zapisz</button>
+        <a class="btn btn-secondary" asp-action="Index">Wróć</a>
+    </div>
+</form>
